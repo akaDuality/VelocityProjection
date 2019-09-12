@@ -1,15 +1,27 @@
 import XCTest
 @testable import VelocityProjection
 
+
 final class VelocityProjectionTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(VelocityProjection().text, "Hello, World!")
+    
+    #if os(iOS)
+    func test_fastDecelerationCalculation() {
+        let velocity: CGFloat = 100.348
+        
+        let offset = velocity.projectedOffset(decelerationRate: UIScrollView.DecelerationRate.fast.rawValue)
+        XCTAssertEqual(offset, 10.034, accuracy: 0.001)
+    }
+    
+    func test_normalDecelerationCalculation() {
+        let velocity: CGFloat = 100.348
+        
+        let offset = velocity.projectedOffset(decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+        XCTAssertEqual(offset, 50.174, accuracy: 0.0001)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("test_fastDecelerationCalculation", test_fastDecelerationCalculation),
+        ("test_slowDecelerationCalculation", test_normalDecelerationCalculation)
     ]
+    #endif
 }
